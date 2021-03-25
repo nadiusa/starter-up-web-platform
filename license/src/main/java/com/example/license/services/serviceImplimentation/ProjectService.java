@@ -30,7 +30,6 @@ public class ProjectService implements ProjectServiceInt {
             proj.get().setStartDate(project.getStartDate());
         if (project.getEndDate() != null)
             proj.get().setEndDate(project.getEndDate());
-
         return proj.get();
     }
 
