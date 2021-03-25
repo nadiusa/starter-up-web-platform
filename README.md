@@ -1,1 +1,3 @@
 # starter-up-web-platform
+### This is a secure RESTful API with Spring Boot, Security, and Data MongoDB.
+### It is a project for developing the licence thesis, which is a web platform for crowdfunding, where an entrepreneur is able to add his existing business that needs an investment, as well as a simple creator that wants to develop a start-up and needs material help to implement a great idea into reality.
