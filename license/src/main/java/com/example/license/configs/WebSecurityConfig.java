@@ -18,7 +18,6 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 
 import javax.servlet.http.HttpServletResponse;
 
-
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -30,7 +29,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         UserDetailsService userDetailsService = mongoUserDetails();
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
-
     }
 
     @Override

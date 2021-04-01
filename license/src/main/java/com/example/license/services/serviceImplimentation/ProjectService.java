@@ -1,13 +1,18 @@
 package com.example.license.services.serviceImplimentation;
 
 import com.example.license.entities.Project;
+import com.example.license.repos.ProjectRepository;
 import com.example.license.services.ProjectServiceInt;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component
 public class ProjectService implements ProjectServiceInt {
+    @Autowired
+    private ProjectRepository projectRepository;
+
     @Override
     public Project update(Optional<Project> proj, Project project) {
         if (project.getDescription() != null)
@@ -36,5 +41,9 @@ public class ProjectService implements ProjectServiceInt {
     @Override
     public Project create() {
         return null;
+    }
+
+    public void deleteAll() {
+        projectRepository.deleteAll();
     }
 }

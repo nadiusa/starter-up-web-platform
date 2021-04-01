@@ -48,7 +48,16 @@ public class ProjectController {
     @RequestMapping(method = RequestMethod.DELETE, value = "/api/projects/delete/{id}")
     public String delete(@PathVariable String id) {
         Optional<Project> project = projectRepository.findById(id);
-        projectRepository.delete(project.get());
-        return "project deleted";
+        if (project.isPresent()) {
+            projectRepository.delete(project.get());
+            return "The project with name '" + project.get().getName() + "' was deleted";
+        } else
+            return "Such project does not exist!";
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "/api/projects/deleteAll")
+    public String deleteAll() {
+        projectService.deleteAll();
+        return "Deleted all projects.";
     }
 }
