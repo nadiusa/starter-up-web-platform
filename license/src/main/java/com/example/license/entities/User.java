@@ -1,11 +1,13 @@
 package com.example.license.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.IndexDirection;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
@@ -15,12 +17,11 @@ public class User {
     @Id
     private String id;
     @Indexed(unique = true, direction = IndexDirection.DESCENDING, dropDups = true)
-
+    @Email
     private String email;
     @NotNull
     private String password;
 
-    private transient String passwordConfirmation;
     private String fullName;
     private String phoneNumber; // including the country code
     private String birthdate;
@@ -29,6 +30,7 @@ public class User {
     private Role roleType;
     private boolean enabled;
     @DBRef
+    @JsonIgnore
     private Set<Role> roles;
 
     public String getId() {
@@ -119,11 +121,4 @@ public class User {
         this.roles = roles;
     }
 
-    public String getPasswordConfirmation() {
-        return passwordConfirmation;
-    }
-
-    public void setPasswordConfirmation(String passwordConfirmation) {
-        this.passwordConfirmation = passwordConfirmation;
-    }
 }

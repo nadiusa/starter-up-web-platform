@@ -74,4 +74,13 @@ public class JwtTokenProvider {
             throw new JwtException("Expired or invalid JWT token");
         }
     }
+
+    public boolean inValidateToken() {
+        try {
+            secretKey = secretKey + "nadejda";
+            return true;
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new JwtException("Expired or invalid JWT token");
+        }
+    }
 }

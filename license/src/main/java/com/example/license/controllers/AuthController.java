@@ -1,6 +1,7 @@
 package com.example.license.controllers;
 
 import com.example.license.configs.JwtTokenProvider;
+import com.example.license.entities.AuthBody;
 import com.example.license.entities.User;
 import com.example.license.exception.APIRequstException;
 import com.example.license.repos.UserRepository;
@@ -10,17 +11,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api")
 public class AuthController {
 
     @Autowired
@@ -44,10 +46,10 @@ public class AuthController {
             String token = jwtTokenProvider.createToken(username, this.users.findByEmail(username).getRoles());
             Map<Object, Object> model = new HashMap<>();
             model.put("username", username);
-            model.put("token", token);
+            model.put("token", "Bearer " + token);
             return ok(model);
         } catch (AuthenticationException e) {
-            throw new APIRequstException("Invalid email/password supplied");
+            throw new APIRequstException("Invalid email/password supplied.");
         }
     }
 
@@ -56,20 +58,14 @@ public class AuthController {
     public ResponseEntity register(@RequestBody User user) {
         User userExists = userService.findUserByEmail(user.getEmail());
         if (userExists != null) {
-            throw new APIRequstException("User with username: " + user.getEmail() + " already exists");
+            throw new APIRequstException("User with username: " + user.getEmail() + " already exists.");
         }
         userService.saveUser(user);
         Map<Object, Object> model = new HashMap<>();
-        model.put("message", "User registered successfully");
+        model.put("message", "User registered successfully.");
         return ok(model);
     }
 
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public String logout(HttpServletRequest request) {
-        HttpSession httpSession = request.getSession();
-        httpSession.invalidate();
-        return "redirect:/";
-    }
 }
 
 //

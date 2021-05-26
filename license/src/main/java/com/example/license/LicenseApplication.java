@@ -19,34 +19,35 @@ public class LicenseApplication {
 
 		return args -> {
 
-			Role adminRole = roleRepository.findByRole("ADMIN");
-			if (adminRole == null) {
-				Role newAdminRole = new Role();
-				newAdminRole.setRole("ADMIN");
-				roleRepository.save(newAdminRole);
-			}
+            Role adminRole = roleRepository.findByRole("ADMIN");
+            if (adminRole == null) {
+                Role newAdminRole = new Role();
+                newAdminRole.setRole("ADMIN");
+                roleRepository.save(newAdminRole);
+            }
 
-//			Role userRole = roleRepository.findByRole("USER");
-//			if (userRole == null) {
-//				Role newUserRole = new Role();
-//				newUserRole.setRole("USER");
-//				roleRepository.save(newUserRole);
-//			}
-//
-//			Role investorRole = roleRepository.findByRole("INVESTOR");
-//			if (investorRole == null) {
-//				Role newInvestorRole = new Role();
-//				newInvestorRole.setRole("INVESTOR");
-//				roleRepository.save(newInvestorRole);
-//			}
-//
-//			Role entrepreneurRole = roleRepository.findByRole("ENTREPRENEUR");
-//			if (entrepreneurRole == null) {
-//				Role newEntrepreneurRole = new Role();
-//				newEntrepreneurRole.setRole("ENTREPRENEUR");
-//				roleRepository.save(newEntrepreneurRole);
-//			}
-		};
+
+            Role userRole = roleRepository.findByRole("USER");
+            if (userRole == null) {
+                Role newUserRole = new Role();
+                newUserRole.setRole("USER");
+                roleRepository.save(newUserRole);
+            }
+
+            Role investorRole = roleRepository.findByRole("INVESTOR");
+            if (investorRole == null) {
+                Role newInvestorRole = new Role();
+                newInvestorRole.setRole("INVESTOR");
+                roleRepository.save(newInvestorRole);
+            }
+
+            Role entrepreneurRole = roleRepository.findByRole("ENTREPRENEUR");
+            if (entrepreneurRole == null) {
+                Role newEntrepreneurRole = new Role();
+                newEntrepreneurRole.setRole("ENTREPRENEUR");
+                roleRepository.save(newEntrepreneurRole);
+            }
+        };
 
 	}
 

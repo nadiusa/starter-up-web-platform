@@ -1,9 +1,15 @@
 package com.example.license.repos;
 
 import com.example.license.entities.User;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.CrudRepository;
 
-public interface UserRepository extends MongoRepository<User, String> {
+public interface UserRepository extends CrudRepository<User, String> {
 
     User findByEmail(String email);
+
+
+    @Override
+    void delete(User deleted);
+
+    //other method implementations are already covered by Crud repo with mongoDB
 }

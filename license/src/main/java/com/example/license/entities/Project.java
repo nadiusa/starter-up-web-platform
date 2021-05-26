@@ -1,10 +1,12 @@
 package com.example.license.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.IndexDirection;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -12,6 +14,7 @@ import java.util.List;
 public class Project {
 
     @Id
+    @NotNull
     private String id;
     @Indexed(unique = true, direction = IndexDirection.DESCENDING, dropDups = true)
 
@@ -21,24 +24,24 @@ public class Project {
     private String category;
     private List<String> teamMembers;
     private BigDecimal fundingAmountRequired; // the amount of money will be shown in €
+    @JsonIgnore
     private BigDecimal currentAmountFounded;
+    @JsonIgnore
     private String fullAuthorName;
 
     private String startDate;
     private String endDate;
 
-    public Project(String description, String status, String name, String category, List<String> teamMembers, BigDecimal fundingAmountRequired,
-                   BigDecimal currentAmountFounded, String fullAuthorName, String startDate, String endDate) {
+    public Project(String id, String description, String status, String name, String category, List<String> teamMembers, BigDecimal fundingAmountRequired, String startDate, String endDate) {
         this.description = description;
         this.status = status;
         this.name = name;
         this.category = category;
         this.teamMembers = teamMembers;
         this.fundingAmountRequired = fundingAmountRequired;
-        this.currentAmountFounded = currentAmountFounded;
-        this.fullAuthorName = fullAuthorName;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.id = id;
     }
 
     public String getId() {

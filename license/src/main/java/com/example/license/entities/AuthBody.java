@@ -1,4 +1,4 @@
-package com.example.license.controllers;
+package com.example.license.entities;
 
 public class AuthBody {
     private String email;

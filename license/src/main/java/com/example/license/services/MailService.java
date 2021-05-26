@@ -28,13 +28,13 @@ public class MailService {
     }
 
     public SimpleMailMessage constructResetPasswordTokenEmail(String contextPath, String token, User user) {
-        String url = "http://localhost:8080" + "/user/checkForgotPasswordToken?id=" + user.getId() + "&token=" + token;
+        String url = "6597a5f76588.ngrok.io" + "/user/checkForgotPasswordToken?id=" + user.getId() + "&token=" + token;
         System.out.println(url);
         return constructEmail("Reset Password", url, user);
     }
 
     public SimpleMailMessage constructActivateAccountTokenEmail(String token, User user) {
-        String url = "http://localhost:8080" + "/user/checkActivateAccountToken?id=" + user.getId() + "&token=" + token;
+        String url = "6597a5f76588.ngrok.io" + "/user/checkActivateAccountToken?id=" + user.getId() + "&token=" + token;
         System.out.println(url);
         return constructEmail("Account activation", url, user);
     }

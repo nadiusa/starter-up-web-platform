@@ -5,6 +5,7 @@ public class APIRequstException extends RuntimeException {
         super(message);
     }
 
+
     public APIRequstException(String message, Throwable cause) {
         super(message, cause);
     }
