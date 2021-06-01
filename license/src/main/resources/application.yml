@@ -1,0 +1,36 @@
+cloud:
+  aws:
+    credentials:
+      access-key: AKIAZ5PJ7ZCD4FO2BJ5H
+      secret-key: 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
+    region:
+      static: eu-west-2
+    stack:
+      auto: false
+
+application:
+  bucket:
+    name: avatarstorages
+
+
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2MB
+      max-file-size: 5MB
+      max-request-size: 10MB
+  mail:
+    host: smtp.gmail.com
+    password: Starterup2021!
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    username: starterup.com@gmail.com
+
+server:
+  port: 8080

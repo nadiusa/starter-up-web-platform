@@ -27,11 +27,19 @@ public class User {
     private String birthdate;
     private String birthCountry;
     private String gender;
+    @JsonIgnore
+    private String avatarUrl;
     private Role roleType;
     private boolean enabled;
+
+    private String resetPasswordToken;
+
     @DBRef
     @JsonIgnore
     private Set<Role> roles;
+
+    public User() {
+    }
 
     public String getId() {
         return id;
@@ -121,4 +129,19 @@ public class User {
         this.roles = roles;
     }
 
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+
+    public String getResetPasswordToken() {
+        return resetPasswordToken;
+    }
+
+    public void setResetPasswordToken(String resetPasswordToken) {
+        this.resetPasswordToken = resetPasswordToken;
+    }
 }

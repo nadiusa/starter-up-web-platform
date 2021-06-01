@@ -1,50 +1,33 @@
 package com.example.license.services;
 
-import com.example.license.entities.User;
-import org.springframework.mail.SimpleMailMessage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
-import java.util.Properties;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import java.io.UnsupportedEncodingException;
 
 @Component
 public class MailService {
-    public JavaMailSender getJavaMailSender() {
-        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost("smtp.gmail.com");
-        mailSender.setPort(587);
 
-        mailSender.setUsername("starterup.com@gmail.com");
-        mailSender.setPassword("Starterup2021!");
+    @Autowired
+    private JavaMailSender mailSender;
 
-        Properties props = mailSender.getJavaMailProperties();
-        props.put("mail.transport.protocol", "smtp");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.debug", "true");
-
-        return mailSender;
+    public void sendMail(String email, String resetPassLink) throws UnsupportedEncodingException, MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+        helper.setFrom("starterup.com@gmail.com", "StarterUp Project");
+        helper.setTo(email);
+        String subject = "Here is the link to reset your password";
+        String content = "<p> Hello, </p>"
+                + "<p>If you have requested to reset your password, click the link below to change it:</p>"
+                + "<p><b><a href=\"" + resetPassLink + "\"> Reset my password </a></b></p>"
+                + "<p>Ignore this email if you did not request to reset you password!</p> ";
+        helper.setSubject(subject);
+        helper.setText(content, true);
+        mailSender.send(message);
     }
 
-    public SimpleMailMessage constructResetPasswordTokenEmail(String contextPath, String token, User user) {
-        String url = "6597a5f76588.ngrok.io" + "/user/checkForgotPasswordToken?id=" + user.getId() + "&token=" + token;
-        System.out.println(url);
-        return constructEmail("Reset Password", url, user);
-    }
-
-    public SimpleMailMessage constructActivateAccountTokenEmail(String token, User user) {
-        String url = "6597a5f76588.ngrok.io" + "/user/checkActivateAccountToken?id=" + user.getId() + "&token=" + token;
-        System.out.println(url);
-        return constructEmail("Account activation", url, user);
-    }
-
-    private SimpleMailMessage constructEmail(String subject, String body, User user) {
-        SimpleMailMessage email = new SimpleMailMessage();
-        email.setSubject(subject);
-        email.setText(body);
-        email.setTo(user.getEmail());
-        email.setFrom("starterup.com@gmail.com");
-        return email;
-    }
 }

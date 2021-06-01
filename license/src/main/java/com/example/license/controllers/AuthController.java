@@ -53,8 +53,7 @@ public class AuthController {
         }
     }
 
-    @SuppressWarnings("rawtypes")
-    @PostMapping("/register")
+    @PostMapping(value = "/register")
     public ResponseEntity register(@RequestBody User user) {
         User userExists = userService.findUserByEmail(user.getEmail());
         if (userExists != null) {

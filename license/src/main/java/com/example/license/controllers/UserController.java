@@ -6,16 +6,26 @@ import com.example.license.exception.APIRequstException;
 import com.example.license.repos.UserRepository;
 import com.example.license.services.MailService;
 import com.example.license.services.serviceImplimentation.UserService;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.MessagingException;
+import javax.validation.constraints.NotNull;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static org.springframework.http.ResponseEntity.ok;
 
 @Controller
 @RequestMapping("/api/users")
@@ -29,7 +39,15 @@ public class UserController {
     JwtTokenProvider jwtTokenProvider;
     @Autowired
     UserRepository userRepository;
+
     private MailService mailService;
+
+
+    @Value("${siteUrl}")
+    private String siteUrl;
+    @Autowired
+    private StorageController storageController;
+
 
     @Autowired
     public void setMailService(MailService mailService) {
@@ -62,6 +80,17 @@ public class UserController {
         return ResponseEntity.ok("Your password was successfully updated.");
     }
 
+    @RequestMapping(method = RequestMethod.PUT, value = "/updateAvatar/{id}")
+    public ResponseEntity updateUserAvatar(@RequestParam(value = "file") MultipartFile file, @PathVariable String id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        User user = userOptional.get();
+        user.setAvatarUrl(storageController.uploadFile(file).getBody());
+        userRepository.save(user);
+        logger.log(Level.INFO, "Link image for user with email: " + user.getEmail() + " was added:     \n" + user.getAvatarUrl());
+        return ResponseEntity.ok("Link image for user with email: " + user.getEmail() + " was added:     \n" + user.getAvatarUrl());
+    }
+
+
     @RequestMapping(method = RequestMethod.DELETE, value = "/deleteUser/{id}")
     public ResponseEntity delete(@PathVariable String id) {
         Optional<User> user = userRepository.findById(id);
@@ -72,6 +101,32 @@ public class UserController {
             throw new APIRequstException("Such user does not exist or you entered an invalid name!");
     }
 
+    @RequestMapping(method = RequestMethod.PUT, value = "/user/resetPassword")
+    public ResponseEntity resetPassword(@RequestParam @NotNull String email) {
+        String token = RandomStringUtils.random(50, true, true);
+        userService.updateResetPassword(token, email);
+        String resetPassLink = siteUrl + "api/users/user/resetPassword?token=" + token;
+        try {
+            mailService.sendMail(email, resetPassLink);
+            Map<Object, Object> model = new HashMap<>();
+            model.put("token", token);
+            return ok(model);
+        } catch (UnsupportedEncodingException | MessagingException e1) {
+            throw new APIRequstException(e1.getMessage());
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/user/resetPassword")
+    public ResponseEntity resetPassword(@RequestParam String token, @RequestParam String password) {
+        User user = userService.get(token);
+        if (user != null) {
+            userService.updatePassword(user, password);
+            logger.log(Level.INFO, "Your password was successfully reset.");
+            return ResponseEntity.ok("Your password was successfully reset.");
+        } else
+            throw new APIRequstException("Reset password was not able to complete, please access again the link that you received on email.");
+    }
+
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     public String logout() {
         try {
@@ -79,10 +134,10 @@ public class UserController {
                 return "Used logged out successfully!";
             else
                 return "Something went wrong!";
-
         } catch (AuthenticationException e) {
             throw new APIRequstException("Invalid email/password supplied");
         }
     }
+
 
 }

@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-
 @Component
 public class UserService implements UserServiceInt {
 
@@ -81,4 +80,27 @@ public class UserService implements UserServiceInt {
         }
         return userId;
     }
+
+    public void updateResetPassword(String token, String email) {
+        User user = userRepository.findByEmail(email);
+        if (user != null) {
+            user.setResetPasswordToken(token);
+            userRepository.save(user);
+        } else {
+            throw new APIRequstException("There is no user with such email:  " + email);
+        }
+    }
+
+    public User get(String resetPasswordToken) {
+        return userRepository.findByResetPasswordToken(resetPasswordToken);
+    }
+
+    public void updatePassword(User user, String password) {
+        String encodedPass = bCryptPasswordEncoder.encode(password);
+        user.setPassword(encodedPass);
+        user.setResetPasswordToken(null);
+        userRepository.save(user);
+    }
+
+
 }
