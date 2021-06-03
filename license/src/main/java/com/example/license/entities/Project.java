@@ -32,6 +32,8 @@ public class Project {
     private String startDate;
     private String endDate;
 
+    private String businessPlanDocUrl;
+
     public Project(String id, String description, String status, String name, String category, List<String> teamMembers, BigDecimal fundingAmountRequired, String startDate, String endDate) {
         this.description = description;
         this.status = status;
@@ -130,5 +132,13 @@ public class Project {
 
     public void setEndDate(String endDate) {
         this.endDate = endDate;
+    }
+
+    public String getBusinessPlanDocUrl() {
+        return businessPlanDocUrl;
+    }
+
+    public void setBusinessPlanDocUrl(String businessPlanDocUrl) {
+        this.businessPlanDocUrl = businessPlanDocUrl;
     }
 }

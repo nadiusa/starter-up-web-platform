@@ -21,7 +21,6 @@ public class User {
     private String email;
     @NotNull
     private String password;
-
     private String fullName;
     private String phoneNumber; // including the country code
     private String birthdate;
@@ -31,7 +30,7 @@ public class User {
     private String avatarUrl;
     private Role roleType;
     private boolean enabled;
-
+    @JsonIgnore
     private String resetPasswordToken;
 
     @DBRef

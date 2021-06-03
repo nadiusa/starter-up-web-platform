@@ -11,6 +11,6 @@ public interface UserRepository extends CrudRepository<User, String> {
     @Override
     void delete(User deleted);
 
-    public User findByResetPasswordToken(String token);
+    User findByResetPasswordToken(String token);
     //other method implementations are already covered by Crud repo with mongoDB
 }

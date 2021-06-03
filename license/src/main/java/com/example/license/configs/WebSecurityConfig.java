@@ -36,7 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.httpBasic().disable().csrf().disable().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
-                .antMatchers("/api/login").permitAll().antMatchers("/api/register").permitAll().antMatchers("/api/users/user/**").permitAll()
+                .antMatchers("/api/login").permitAll().antMatchers("/api/register").permitAll()
                 .antMatchers(
                         HttpMethod.GET,
                         "/",

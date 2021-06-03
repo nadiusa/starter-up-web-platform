@@ -42,9 +42,9 @@ public class UserController {
 
     private MailService mailService;
 
-
     @Value("${siteUrl}")
     private String siteUrl;
+
     @Autowired
     private StorageController storageController;
 
